@@ -33,7 +33,7 @@ A beginner financial data analysis project built using Python, Pandas, and Objec
 
 ## 🚀 Future Improvements
 * [x] CSV file support
-* [ ] Data visualization
+* [x] Data visualization
 * [ ] Market trend analysis
 * [ ] Portfolio analytics
 
