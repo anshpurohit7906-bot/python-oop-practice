@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 class MarketPipeline :
 
@@ -20,6 +21,16 @@ class MarketPipeline :
     def expensive_stocks(self , threshold):
         return self.df[self.df["Price"]> threshold]
     
+    def plot_charts(self):
+        self.df.plot(x="Ticker", y="Price", kind="bar", color="skyblue", legend=False)
+
+        plt.title("Real-Time Stock Price Comparison")
+        plt.xlabel("Stock Ticker")
+        plt.ylabel("Price ($)")
+
+        plt.tight_layout()
+        plt.show()
+
 if __name__ == "__main__":
 
     my_pipeline = MarketPipeline("market_data.csv")
@@ -33,4 +44,5 @@ if __name__ == "__main__":
     print(vol)
     print(low)    
     print(exp)
-    print(my_pipeline.df)
+    print ("Generating Stock Price Chart")
+    my_pipeline.plot_charts()
