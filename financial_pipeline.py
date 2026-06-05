@@ -22,9 +22,26 @@ class MarketPipeline :
     def calculate_average_price(self ):
         return self.df["Price"].mean()
     
-my_pipeline = MarketPipeline(raw_market_stream)
-result = my_pipeline.calculate_average_price()
-print(result)
-
-
+    def get_highest_price(self):
+        return self.df["Price"].max()
     
+    def total_volume(self):
+        return self.df["Volume"].sum()
+
+    def get_lowest_price(self):
+        return self.df["Price"].min()
+    
+    def expensive_stocks(self , threshold):
+        return self.df[self.df["Price"]> threshold]
+
+my_pipeline = MarketPipeline(raw_market_stream)
+avg = my_pipeline.calculate_average_price()
+max = my_pipeline.get_highest_price()
+vol = my_pipeline.total_volume()
+min = my_pipeline.get_lowest_price()
+exp = my_pipeline.expensive_stocks(200)
+print(avg)
+print(max)
+print(vol)
+print(min)    
+print(exp)
