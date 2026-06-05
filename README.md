@@ -32,7 +32,7 @@ A beginner financial data analysis project built using Python, Pandas, and Objec
 * `expensive_stocks(threshold)`
 
 ## 🚀 Future Improvements
-* [ ] CSV file support
+* [x] CSV file support
 * [ ] Data visualization
 * [ ] Market trend analysis
 * [ ] Portfolio analytics
