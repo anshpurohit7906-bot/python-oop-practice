@@ -18,6 +18,17 @@ class MarketPipeline :
     def get_lowest_price(self):
         return self.df["Price"].min()
     
+    def generate_summary_report(self):
+        avg_price = self.calculate_average_price()
+        max_price = self.get_highest_price()
+        min_price = self.get_lowest_price()
+        total_vol = self.total_volume()
+
+        print(f"Average Price : {avg_price:,.2f}")
+        print(f"Maximum Price : {max_price:,.2f}")
+        print(f"Minimum Price : {min_price:,.2f}")
+        print(f"Total_volume  : {total_vol:,}")
+    
     def expensive_stocks(self , threshold):
         return self.df[self.df["Price"]> threshold]
     
@@ -41,46 +52,23 @@ class MarketPipeline :
         plt.tight_layout()
         plt.show()
 
-    def plot_price_trend(self):
+    def plot_price_trend(self,ticker_symbol):
 
-        self.calculate_moving_average()
+        filtered_df = self.calculate_moving_average(ticker_symbol)
 
-        plt.plot(self.df["Date"],self.df["Price"],marker="o",color="green",label="Daily Price")
+        plt.plot(filtered_df["Date"],filtered_df["Price"],marker = "o",color = "green",label="Daily Price")
+        plt.plot(filtered_df["Date"],filtered_df["MA_3"],linestyle = "--",color = "red",label="3-Day Moving Average")
 
-        plt.plot(self.df["Date"],self.df["MA_3"],linestyle="--",color="red",label="3-day moving avg")
-
-
-        plt.title("NVDA 7-Day Price Trend")
+        plt.title(f"{ticker_symbol} Price Trend & Moving Average")
         plt.xlabel("Date")
         plt.ylabel("Price ($)")
-        plt.grid(True)
         plt.legend()
-
         plt.tight_layout()
         plt.xticks(rotation = 45)
         plt.show()
 
-    def calculate_moving_average(self):
-        self.df["MA_3"] = self.df["Price"].rolling(window=3).mean()
-
-if __name__ == "__main__":
-
-    my_pipeline = MarketPipeline("market_data.csv")
-    avg = my_pipeline.calculate_average_price()
-    high = my_pipeline.get_highest_price()
-    vol = my_pipeline.total_volume()
-    low = my_pipeline.get_lowest_price()
-    exp = my_pipeline.expensive_stocks(200)
-    print(avg)
-    print(high)
-    print(vol)
-    print(low)    
-    print(exp)
-    print ("Generating Stock Price Chart...")
-    my_pipeline.plot_stock_prices()
-    print ("Generating Stock Volume Chart...")
-    my_pipeline.plot_volume_chart()
-    print("Generating Historical Trend Line...")
-    my_pipeline.plot_price_trend()
-    print("Generating Trend and Moving Average Chart...")
-    my_pipeline.plot_price_trend()
+    def calculate_moving_average(self,ticker_symbol):
+       filtered_df = self.df[self.df["Ticker"] == ticker_symbol].copy()
+       filtered_df["MA_3"] = filtered_df["Price"].rolling(window=3).mean().bfill()
+       return filtered_df
+    
