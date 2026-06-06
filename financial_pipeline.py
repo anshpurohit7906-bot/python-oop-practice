@@ -21,7 +21,7 @@ class MarketPipeline :
     def expensive_stocks(self , threshold):
         return self.df[self.df["Price"]> threshold]
     
-    def plot_charts(self):
+    def plot_stock_prices(self):
         self.df.plot(x="Ticker", y="Price", kind="bar", color="skyblue", legend=False)
 
         plt.title("Real-Time Stock Price Comparison")
@@ -30,6 +30,38 @@ class MarketPipeline :
 
         plt.tight_layout()
         plt.show()
+
+    def plot_volume_chart(self):
+        self.df.plot(x = "Ticker", y = "Volume" , kind = "bar")
+
+        plt.title("Real Time Stock Volume Comparison")
+        plt.xlabel("Stock Ticker")
+        plt.ylabel("Volume")
+
+        plt.tight_layout()
+        plt.show()
+
+    def plot_price_trend(self):
+
+        self.calculate_moving_average()
+
+        plt.plot(self.df["Date"],self.df["Price"],marker="o",color="green",label="Daily Price")
+
+        plt.plot(self.df["Date"],self.df["MA_3"],linestyle="--",color="red",label="3-day moving avg")
+
+
+        plt.title("NVDA 7-Day Price Trend")
+        plt.xlabel("Date")
+        plt.ylabel("Price ($)")
+        plt.grid(True)
+        plt.legend()
+
+        plt.tight_layout()
+        plt.xticks(rotation = 45)
+        plt.show()
+
+    def calculate_moving_average(self):
+        self.df["MA_3"] = self.df["Price"].rolling(window=3).mean()
 
 if __name__ == "__main__":
 
@@ -44,5 +76,11 @@ if __name__ == "__main__":
     print(vol)
     print(low)    
     print(exp)
-    print ("Generating Stock Price Chart")
-    my_pipeline.plot_charts()
+    print ("Generating Stock Price Chart...")
+    my_pipeline.plot_stock_prices()
+    print ("Generating Stock Volume Chart...")
+    my_pipeline.plot_volume_chart()
+    print("Generating Historical Trend Line...")
+    my_pipeline.plot_price_trend()
+    print("Generating Trend and Moving Average Chart...")
+    my_pipeline.plot_price_trend()
