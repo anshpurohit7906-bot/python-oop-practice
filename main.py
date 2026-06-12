@@ -19,7 +19,7 @@ if __name__ == "__main__":
    
     target_ticker = "NVDA"
     if target_ticker not in my_pipeline.df["Ticker"].values:
-        print("Wrong stock")
+        print("Error: Ticker 'NVDA' was not found in the dataset.")
     else:
         print("Generating Trend and Moving Average Chart...")
         my_pipeline.plot_price_trend(target_ticker)
