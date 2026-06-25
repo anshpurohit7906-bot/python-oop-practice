@@ -21,7 +21,17 @@ class CombatDrone :
         print(f"Drone {self.get_name()} is scanning. Battery level :{self.get_battery()} ")
 
 
-if __name__ == "__main__":
-    drone_one = CombatDrone("Falcon-01",80)
-    drone_one.scan_target()
-    drone_one.set_battery(-1)
+class SniperDrone(CombatDrone):
+
+    def __init__(self, name, battery,laser_range):
+        super().__init__(name,battery)
+        self._laser_range = laser_range
+       
+    def get_laser_range(self):
+        return self._laser_range
+    
+if __name__ == "__main__" :
+    sniper_one = SniperDrone("Ghost-01",67,1500)
+    sniper_one.scan_target()
+    print(sniper_one.get_laser_range())
+    
